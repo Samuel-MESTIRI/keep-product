@@ -1,0 +1,201 @@
+@import "tailwindcss";
+
+/*
+ * Design system KeepProduct : bleu pétrole profond, accent terre cuite,
+ * neutres chauds façon papier (lin, pierre). Les couleurs sont des variables
+ * CSS : elles changent avec le thème, Tailwind ne fait que les exposer
+ * (bg-surface, text-primary…).
+ */
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@theme {
+  --font-sans: "Outfit", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --color-primary: var(--c-primary);
+  --color-primary-dark: var(--c-primary-dark);
+  --color-primary-light: var(--c-primary-light);
+  --color-primary-soft: var(--c-primary-soft);
+  --color-on-primary: var(--c-on-primary);
+  --color-accent: var(--c-accent);
+  --color-accent-strong: var(--c-accent-strong);
+  --color-accent-surface: var(--c-accent-surface);
+  --color-on-accent: var(--c-on-accent);
+  --color-bg: var(--c-bg);
+  --color-surface: var(--c-surface);
+  --color-surface-alt: var(--c-surface-alt);
+  --color-surface-muted: var(--c-surface-muted);
+  --color-ink: var(--c-text);
+  --color-ink-2: var(--c-text-secondary);
+  --color-muted: var(--c-text-muted);
+  --color-line: var(--c-border);
+  --color-line-strong: var(--c-border-strong);
+  --color-danger: var(--c-danger);
+  --color-danger-solid: var(--c-danger-solid);
+  --color-danger-surface: var(--c-danger-surface);
+  --color-success: var(--c-success);
+  --color-success-surface: var(--c-success-surface);
+  --color-warning: var(--c-warning);
+  --color-warning-surface: var(--c-warning-surface);
+  --color-sale: var(--c-sale);
+  --color-photo: var(--c-photo);
+  --color-placeholder: var(--c-image-placeholder);
+  --color-scrim: var(--c-scrim);
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+
+  --shadow-card: 0 1px 2px rgb(30 35 38 / 0.06), 0 1px 1px rgb(30 35 38 / 0.03);
+  --shadow-float: 0 6px 20px rgb(30 35 38 / 0.16);
+}
+
+/* ---- Thème clair (défaut) ---- */
+:root {
+  color-scheme: light;
+  --c-primary: #2E4A52;
+  --c-primary-dark: #1F353B;
+  --c-primary-light: #5E7F87;
+  --c-primary-soft: #5E7F872E;
+  --c-on-primary: #FFFFFF;
+  --c-accent: #C66B3D;
+  --c-accent-strong: #9A4B24;
+  --c-accent-surface: #F7E6DC;
+  --c-on-accent: #FFFFFF;
+  --c-bg: #F6F3EE;
+  --c-surface: #FFFFFF;
+  --c-surface-alt: #EEEAE3;
+  --c-surface-muted: #E4DFD6;
+  --c-text: #1E2326;
+  --c-text-secondary: #5A6166;
+  --c-text-muted: #7A8186;
+  --c-border: #E4DED5;
+  --c-border-strong: #D2CBC0;
+  --c-danger: #C62828;
+  --c-danger-solid: #C62828;
+  --c-danger-surface: #FDE7E7;
+  --c-success: #2C7A4B;
+  --c-success-surface: #E1F2E7;
+  --c-warning: #9A5B00;
+  --c-warning-surface: #FFF0D6;
+  --c-sale: #D33A2C;
+  /* Fond des photos produit : blanc comme sur les sites marchands */
+  --c-photo: #FFFFFF;
+  --c-image-placeholder: #EEEAE3;
+  --c-scrim: rgb(20 24 26 / 0.62);
+}
+
+/* ---- Thème sombre : choisi explicitement, ou « Système » quand l'appareil est en sombre ---- */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --c-primary: #8FB8C1;
+  --c-primary-dark: #6E99A3;
+  --c-primary-light: #8FB8C1;
+  --c-primary-soft: #8FB8C12B;
+  --c-on-primary: #0E1A1D;
+  --c-accent: #E38C61;
+  --c-accent-strong: #E38C61;
+  --c-accent-surface: #3A2418;
+  --c-on-accent: #1E1410;
+  --c-bg: #121416;
+  --c-surface: #1B1E21;
+  --c-surface-alt: #24282C;
+  --c-surface-muted: #2E3337;
+  --c-text: #EEF0F1;
+  --c-text-secondary: #AEB5BA;
+  --c-text-muted: #8A9399;
+  --c-border: #31363B;
+  --c-border-strong: #41474D;
+  --c-danger: #F87171;
+  --c-danger-solid: #C62828;
+  --c-danger-surface: #3A1E1E;
+  --c-success: #6BCB8F;
+  --c-success-surface: #17301F;
+  --c-warning: #F0B252;
+  --c-warning-surface: #33270F;
+  --c-sale: #FF7A6B;
+  /* Photos produit légèrement atténuées pour ne pas éblouir */
+  --c-photo: #F2F2F0;
+  --c-image-placeholder: #24282C;
+  --c-scrim: rgb(0 0 0 / 0.7);
+}
+
+@layer base {
+  html {
+    background: var(--c-bg);
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    /* Défilement autorisé, pincement et double-tap zoom bloqués
+       (Safari iOS ignore user-scalable=no du viewport) */
+    touch-action: pan-x pan-y;
+  }
+
+  body {
+    @apply bg-bg text-ink font-sans antialiased;
+    font-size: 16px;
+    line-height: 1.5;
+    overscroll-behavior-y: none;
+  }
+
+  /* iOS zoome sur un champ dont la police fait moins de 16 px */
+  input, select, textarea, button {
+    font: inherit;
+    color: inherit;
+  }
+
+  button, [role="button"] {
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--c-primary-light);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* Marges des zones sûres (encoche, Dynamic Island, barre d'accueil) */
+  .safe-top { padding-top: max(env(safe-area-inset-top), 12px); }
+  .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+  .safe-x {
+    padding-left: max(env(safe-area-inset-left), 16px);
+    padding-right: max(env(safe-area-inset-right), 16px);
+  }
+
+  .card {
+    @apply bg-surface rounded-md border border-line shadow-(--shadow-card);
+  }
+
+  .field {
+    @apply w-full min-h-12 rounded-md bg-surface-alt border border-transparent px-4 py-3 text-[16px] text-ink placeholder:text-muted outline-none transition-colors;
+  }
+  .field:focus {
+    @apply border-primary-light bg-surface;
+  }
+
+  .label {
+    @apply block mb-1.5 text-[14px] font-semibold text-ink;
+  }
+
+  .section-label {
+    @apply text-[12px] font-semibold uppercase tracking-[0.1em] text-muted;
+  }
+
+  .no-scrollbar { scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+
+  /* Chiffres alignés pour les prix */
+  .tabular { font-variant-numeric: tabular-nums; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Transitions de page discrètes */
+.page-enter-active, .page-leave-active { transition: opacity 0.15s ease; }
+.page-enter-from, .page-leave-to { opacity: 0; }
