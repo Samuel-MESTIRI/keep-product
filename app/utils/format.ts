@@ -9,6 +9,10 @@ export const boardIcon = (icon: string | null | undefined) =>
 export const imageUrl = (image: string | null | undefined, variant: 'full' | 'thumb' = 'full') =>
   image ? `/images/${image}${variant === 'thumb' ? '-thumb' : ''}.webp` : null
 
+/** Photo à afficher : copie locale, sinon celle du site marchand (site qui bloque le serveur). */
+export const productImage = (p: { image: string | null, remoteImage?: string | null }, variant: 'full' | 'thumb' = 'full') =>
+  imageUrl(p.image, variant) ?? p.remoteImage ?? null
+
 const formatters = new Map<string, Intl.NumberFormat>()
 
 /** Centimes → « 1 299,90 € » (« 49 € » quand il n'y a pas de centimes). */

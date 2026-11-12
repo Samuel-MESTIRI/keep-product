@@ -52,6 +52,22 @@ async function logout() {
 
     <section>
       <h2 class="section-label mb-3">
+        Ajouter depuis Safari
+      </h2>
+      <NuxtLink to="/settings/shortcut" class="card flex min-h-16 items-center gap-3 px-4 py-3 active:bg-surface-alt">
+        <span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary">
+          <AppIcon name="link" :size="22" />
+        </span>
+        <span class="min-w-0 flex-1">
+          <span class="block font-semibold">Raccourci iPhone</span>
+          <span class="block text-[14px] text-ink-2">Partager → KeepProduct, même sur les sites qui bloquent</span>
+        </span>
+        <AppIcon name="chevron-right" :size="20" class="text-muted" />
+      </NuxtLink>
+    </section>
+
+    <section>
+      <h2 class="section-label mb-3">
         Installer l'app
       </h2>
       <div class="card space-y-2 p-4 text-[15px] text-ink-2">

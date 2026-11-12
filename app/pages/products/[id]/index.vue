@@ -101,8 +101,9 @@ const menu = ref(false)
         <IconButton icon="dots" label="Plus d'actions" variant="scrim" @click="menu = true" />
       </div>
       <img
-        v-if="p.image"
-        :src="imageUrl(p.image)!"
+        v-if="productImage(p)"
+        :src="productImage(p)!"
+        referrerpolicy="no-referrer"
         :alt="p.name"
         class="mx-auto max-h-[55dvh] w-full object-contain pt-[max(env(safe-area-inset-top),12px)]"
       >

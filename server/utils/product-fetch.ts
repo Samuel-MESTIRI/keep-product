@@ -14,8 +14,11 @@ const BLOCKED = new Set([401, 403, 405, 406, 429, 503])
  * l'adresse est invalide ou la page n'existe pas : un site qui bloque la
  * lecture renvoie une fiche minimale (nom tiré de l'adresse) avec un avertissement,
  * pour que l'utilisateur la complète à la main.
+ *
+ * `pageHtml` : page déjà lue par l'appareil de l'utilisateur (Raccourci iPhone).
+ * Elle passe les protections anti-robots qui bloquent le serveur : on ne la relit pas.
  */
-export async function fetchProduct(input: string): Promise<FetchedProduct> {
+export async function fetchProduct(input: string, pageHtml?: string): Promise<FetchedProduct> {
   let url: URL
   try {
     url = new URL(input)
@@ -42,7 +45,11 @@ export async function fetchProduct(input: string): Promise<FetchedProduct> {
   let warning: string | null = null
   let html = ''
 
-  try {
+  if (pageHtml) {
+    html = pageHtml
+    product = extractProduct(html, url)
+  }
+  else try {
     const page = await safeFetch(url.toString(), { accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', maxBytes: 8 * 1024 * 1024 })
     url = page.url
     html = page.body.toString('utf8')
@@ -87,6 +94,19 @@ export async function fetchProduct(input: string): Promise<FetchedProduct> {
   }
 
   return { product, warning }
+}
+
+/**
+ * Photo d'un produit : copie locale si le serveur peut la télécharger, sinon
+ * l'adresse de la photo chez le marchand (affichée telle quelle par l'app).
+ */
+export async function productPhoto(imageUrl: string | null, pageUrl: string) {
+  const local = await downloadProductImage(imageUrl, pageUrl)
+  return {
+    image: local?.image ?? null,
+    imageRatio: local?.imageRatio ?? null,
+    remoteImage: local || !imageUrl || imageUrl.length > 2000 ? null : imageUrl,
+  }
 }
 
 /** Télécharge et compresse la photo d'un produit ; null si elle est inaccessible. */

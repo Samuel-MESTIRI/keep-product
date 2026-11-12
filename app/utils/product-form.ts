@@ -7,6 +7,7 @@ export interface ProductFormValue {
   url: string
   image: string | null
   imageRatio: number | null
+  remoteImage: string | null
   brand: string
   merchant: string
   price: string
@@ -26,6 +27,7 @@ interface ProductLike {
   url?: string | null
   image?: string | null
   imageRatio?: number | null
+  remoteImage?: string | null
   brand?: string | null
   merchant?: string | null
   price?: number | null
@@ -46,6 +48,7 @@ export function toFormValue(p: ProductLike = {}): ProductFormValue {
     url: p.url ?? '',
     image: p.image ?? null,
     imageRatio: p.imageRatio ?? null,
+    remoteImage: p.remoteImage ?? null,
     brand: p.brand ?? '',
     merchant: p.merchant ?? '',
     price: centsToInput(p.price),

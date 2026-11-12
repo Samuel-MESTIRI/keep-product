@@ -41,7 +41,7 @@ function submit() {
 
 <template>
   <form class="space-y-5" novalidate @submit.prevent="submit">
-    <PhotoPicker v-model:image="form.image" v-model:ratio="form.imageRatio" />
+    <PhotoPicker v-model:image="form.image" v-model:ratio="form.imageRatio" v-model:remote="form.remoteImage" />
 
     <div>
       <label for="p-name" class="label">Nom du produit</label>

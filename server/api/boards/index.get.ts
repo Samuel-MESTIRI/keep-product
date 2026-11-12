@@ -10,6 +10,7 @@ export default defineEventHandler(async (event) => {
     db.select({
       boardId: schema.productBoards.boardId,
       image: schema.products.image,
+      remoteImage: schema.products.remoteImage,
       price: schema.products.price,
       quantity: schema.products.quantity,
       purchased: schema.products.purchased,
@@ -27,7 +28,11 @@ export default defineEventHandler(async (event) => {
       count: items.length,
       total: sum(items),
       remaining: sum(items.filter(i => !i.purchased)),
-      covers: items.filter(i => i.image).slice(0, 4).map(i => i.image!),
+      // Adresses prêtes à afficher : miniature locale, sinon photo chez le marchand
+      covers: items
+        .map(i => (i.image ? `/images/${i.image}-thumb.webp` : i.remoteImage))
+        .filter((src): src is string => !!src)
+        .slice(0, 4),
     }
   })
 })

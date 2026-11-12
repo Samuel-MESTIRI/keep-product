@@ -22,13 +22,14 @@ export default defineEventHandler(async (event) => {
   // Prix relu sans prix barré : la promotion est terminée
   const originalPrice = product.price != null ? product.originalPrice : existing.originalPrice
   const availability = product.availability !== 'unknown' ? product.availability : existing.availability
-  const image = existing.image ? null : await downloadProductImage(product.imageUrl, existing.url)
+  // Photo seulement si la fiche n'en a pas (ni locale, ni chez le marchand)
+  const photo = existing.image || existing.remoteImage ? null : await productPhoto(product.imageUrl, existing.url)
 
   await db.update(schema.products).set({
     price,
     originalPrice,
     availability,
-    ...(image ?? {}),
+    ...(photo ?? {}),
     ...(!existing.dimensions && product.dimensions ? { dimensions: product.dimensions } : {}),
     checkedAt: new Date(),
   }).where(eq(schema.products.id, id))

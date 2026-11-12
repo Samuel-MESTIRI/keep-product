@@ -48,6 +48,7 @@ export const productSchema = z.object({
   url: z.preprocess(v => (v === '' ? null : v), urlSchema.nullable().default(null)),
   image: z.string().regex(/^[a-f0-9-]{36}$/).nullable().default(null),
   imageRatio: z.number().min(0.2).max(5).nullable().default(null),
+  remoteImage: z.preprocess(v => (v === '' ? null : v), urlSchema.nullable().default(null)),
   brand: optionalText(80),
   merchant: optionalText(80),
   price: optionalCents.default(null),

@@ -13,6 +13,8 @@ Wishlist intelligente pour l'aménagement et la déco : on colle le lien d'un me
 - **Grille façon Pinterest** (chaque photo garde ses proportions), recherche sans accents (nom, boutique, marque, couleur, notes), filtres par liste et « Promos ».
 - **Acheté** : un produit coché sort du « reste à acheter » ; on peut masquer les achetés dans une liste.
 - **Partage Android** : une fois l'app installée, « Partager » depuis le navigateur ouvre directement l'ajout (`share_target` du manifeste). iOS ne le permet pas encore : bouton « Coller le lien ».
+- **Raccourci iPhone** (Réglages → Raccourci iPhone) : dans Safari, Partager → KeepProduct → choix de la liste, le produit est enregistré. C'est l'iPhone qui lit la page, donc ça marche aussi sur les sites qui bloquent le serveur. Code d'accès personnel (seule son empreinte SHA-256 est stockée), guide pas à pas dans l'app. API : `GET /api/shortcut/boards`, `POST /api/shortcut/add?board=<id>` avec `Authorization: Bearer kp_…`.
+- **Photo de secours** : si le serveur ne peut pas télécharger la photo (site qui bloque), l'app affiche celle du site marchand.
 - **Comptes**, thème Système / Clair / Sombre.
 
 ## Lecture des pages produit
@@ -26,6 +28,8 @@ Wishlist intelligente pour l'aménagement et la déco : on colle le lien d'un me
 5. **dimensions** cherchées dans le texte (« Largeur : 120 cm », « 52,5 cm de largeur », « L 120 x P 60 x H 75 cm » juste après « Dimensions »), menus et pied de page ignorés.
 
 Testé : IKEA, Conforama, boutiques Shopify → fiche complète. **Maisons du Monde, Leroy Merlin, La Redoute, BUT** bloquent les lectures automatiques (protection anti-robots) : la fiche est créée avec le nom tiré de l'adresse et un avertissement, à compléter à la main. Les adresses internes (réseau privé) sont refusées.
+
+En production, l'IP du VPS (datacenter OVH) est bloquée par plus de sites encore (IKEA répond 403) : le Raccourci iPhone contourne le problème en envoyant la page lue par Safari.
 
 ## Développement
 

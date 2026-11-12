@@ -1,4 +1,3 @@
-import { eq } from 'drizzle-orm'
 import { z } from 'zod'
 import { CURRENCIES } from '#shared/utils/constants'
 
@@ -15,21 +14,14 @@ export default defineEventHandler(async (event) => {
   const { url } = await readValid(event, bodySchema)
 
   const { product, warning } = await fetchProduct(url)
-  const photo = await downloadProductImage(product.imageUrl, product.url)
-
-  // Déjà enregistré ? (même page, aux paramètres de suivi près)
-  const db = await useDb()
-  const mine = await db.select({ id: schema.products.id, url: schema.products.url }).from(schema.products)
-    .where(eq(schema.products.userId, user.id))
-  const keys = new Set([normalizeUrl(url), normalizeUrl(product.url)])
-  const existingId = mine.find(p => p.url && keys.has(normalizeUrl(p.url)))?.id ?? null
+  const photo = await productPhoto(product.imageUrl, product.url)
+  const existing = await findByUrl(await useDb(), user.id, url, product.url)
 
   return {
     ...product,
-    image: photo?.image ?? null,
-    imageRatio: photo?.imageRatio ?? null,
+    ...photo,
     currency: (CURRENCIES as readonly string[]).includes(product.currency ?? '') ? product.currency! : 'EUR',
-    warning: warning ?? (product.imageUrl && !photo ? 'Photo inaccessible : tu peux en ajouter une.' : null),
-    existingId,
+    warning,
+    existingId: existing?.id ?? null,
   }
 })

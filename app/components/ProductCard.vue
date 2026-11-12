@@ -3,6 +3,7 @@ export interface ProductCardItem {
   id: number
   name: string
   image: string | null
+  remoteImage: string | null
   imageRatio: number | null
   merchant: string | null
   url: string | null
@@ -16,8 +17,9 @@ export interface ProductCardItem {
 
 const props = defineProps<{ product: ProductCardItem }>()
 const discount = computed(() => discountPercent(props.product.price, props.product.originalPrice))
-// Photo sans proportions connues (ajout manuel ancien) : carré
+// Photo sans proportions connues (photo du site marchand) : carré
 const ratio = computed(() => props.product.imageRatio ?? 1)
+const src = computed(() => productImage(props.product, 'thumb'))
 </script>
 
 <template>
@@ -28,12 +30,13 @@ const ratio = computed(() => props.product.imageRatio ?? 1)
   >
     <div class="relative bg-photo" :style="{ aspectRatio: product.image ? String(Math.max(0.55, Math.min(1.6, ratio))) : '1' }">
       <img
-        v-if="product.image"
-        :src="imageUrl(product.image, 'thumb')!"
+        v-if="src"
+        :src="src"
         alt=""
         class="size-full object-contain"
         loading="lazy"
         decoding="async"
+        referrerpolicy="no-referrer"
       >
       <div v-else class="flex size-full items-center justify-center bg-placeholder text-line-strong">
         <AppIcon name="bag" :size="48" />

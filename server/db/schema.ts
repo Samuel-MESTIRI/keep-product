@@ -44,6 +44,11 @@ export const products = pgTable('products', {
   image: text('image'),
   /** Largeur / hauteur de la photo : réserve la place dans la grille avant chargement. */
   imageRatio: real('image_ratio'),
+  /**
+   * Photo du site marchand, affichée telle quelle quand le serveur n'a pas pu
+   * la télécharger (site qui bloque). Ignorée dès qu'une photo locale existe.
+   */
+  remoteImage: text('remote_image'),
   brand: text('brand'),
   /** Nom du site marchand (« IKEA », « maisonsdumonde.com »…). */
   merchant: text('merchant'),
@@ -69,6 +74,17 @@ export const productBoards = pgTable('product_boards', {
   boardId: integer('board_id').notNull().references(() => boards.id, { onDelete: 'cascade' }),
   createdAt: createdAt(),
 }, t => [primaryKey({ columns: [t.productId, t.boardId] }), index('product_boards_board_idx').on(t.boardId)])
+
+/**
+ * Code d'accès personnel du Raccourci iPhone (un par compte). Seule son
+ * empreinte SHA-256 est gardée : le code n'est montré qu'à sa création.
+ */
+export const apiTokens = pgTable('api_tokens', {
+  userId: uuid('user_id').primaryKey().references(() => users.id, { onDelete: 'cascade' }),
+  tokenHash: text('token_hash').notNull(),
+  createdAt: createdAt(),
+  lastUsedAt: timestamp('last_used_at', { withTimezone: true }),
+}, t => [uniqueIndex('api_tokens_hash_idx').on(t.tokenHash)])
 
 /** Historique des prix relevés (à l'ajout, puis à chaque actualisation). */
 export const priceChecks = pgTable('price_checks', {

@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
   const { boardIds: _ignored, ...values } = input
 
   await db.transaction(async (tx) => {
-    await tx.update(schema.products).set({ ...values, updatedAt: new Date() }).where(eq(schema.products.id, id))
+    await tx.update(schema.products).set({ ...values, remoteImage: values.image ? null : values.remoteImage, updatedAt: new Date() }).where(eq(schema.products.id, id))
     await setProductBoards(tx, id, boardIds)
     const priceChanged = values.price !== existing.price || values.originalPrice !== existing.originalPrice
     if (priceChanged && values.price != null) {
