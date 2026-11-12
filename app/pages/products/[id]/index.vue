@@ -105,7 +105,7 @@ const menu = ref(false)
         :src="productImage(p)!"
         referrerpolicy="no-referrer"
         :alt="p.name"
-        class="mx-auto max-h-[55dvh] w-full object-contain pt-[max(env(safe-area-inset-top),12px)]"
+        class="mx-auto max-h-[55dvh] w-full object-contain pt-(--safe-top)"
       >
       <div v-else class="flex h-64 items-center justify-center bg-placeholder text-line-strong">
         <AppIcon name="bag" :size="72" />

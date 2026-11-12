@@ -5,7 +5,7 @@ const { toasts } = useToast()
 <template>
   <div
     class="pointer-events-none fixed inset-x-0 z-50 flex flex-col items-center gap-2 px-4"
-    style="top: max(env(safe-area-inset-top), 12px)"
+    style="top: var(--safe-top)"
     aria-live="polite"
   >
     <TransitionGroup

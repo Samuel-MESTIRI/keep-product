@@ -50,6 +50,15 @@
   --shadow-float: 0 6px 20px rgb(30 35 38 / 0.16);
 }
 
+/*
+ * Haut de l'écran : sous la barre d'état, iOS 26 ajoute un dégradé flou par-dessus
+ * le contenu (app installée). On laisse 20 px de plus pour que titres et boutons
+ * commencent sous ce flou. Sans encoche (ordinateur) : 20 px.
+ */
+:root {
+  --safe-top: calc(env(safe-area-inset-top) + 20px);
+}
+
 /* ---- Thème clair (défaut) ---- */
 :root {
   color-scheme: light;
@@ -156,7 +165,7 @@
 
 @layer components {
   /* Marges des zones sûres (encoche, Dynamic Island, barre d'accueil) */
-  .safe-top { padding-top: max(env(safe-area-inset-top), 12px); }
+  .safe-top { padding-top: var(--safe-top); }
   .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
   .safe-x {
     padding-left: max(env(safe-area-inset-left), 16px);
