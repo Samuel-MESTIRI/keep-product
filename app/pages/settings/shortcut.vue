@@ -145,10 +145,14 @@ completion(JSON.stringify({ url: location.href, html: d.outerHTML }));`
 
         <li class="card p-4">
           <p class="mb-2 font-semibold">
-            ④ Choisir dans la liste
+            ④ Obtenir la valeur du dictionnaire, puis Choisir dans la liste
           </p>
           <p class="text-[14px] text-ink-2">
-            Entrée : <strong>Contenu de l'URL</strong>. Touche › → Invite : <em>Dans quelle liste ?</em>
+            D'abord <strong>Obtenir la valeur du dictionnaire</strong> : touche « Valeur » → <strong>Toutes les clés</strong>, dans <strong>Contenu de l'URL</strong>
+            (sinon le choix proposerait des numéros au lieu des noms).
+          </p>
+          <p class="mt-2 text-[14px] text-ink-2">
+            Puis <strong>Choisir dans la liste</strong> : entrée <strong>Clés</strong>. Touche › → Invite : <em>Dans quelle liste ?</em>
           </p>
         </li>
 
@@ -157,7 +161,7 @@ completion(JSON.stringify({ url: location.href, html: d.outerHTML }));`
             ⑤ Obtenir la valeur du dictionnaire
           </p>
           <p class="text-[14px] text-ink-2">
-            Obtenir la <strong>Valeur</strong> pour <strong>Élément choisi</strong> dans <strong>Contenu de l'URL</strong>.
+            Obtenir la <strong>Valeur</strong> pour <strong>Élément choisi</strong> dans <strong>Contenu de l'URL</strong> (celui de l'étape ③) : le nom choisi devient le numéro de la liste.
           </p>
         </li>
 
