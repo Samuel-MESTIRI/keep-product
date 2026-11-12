@@ -1,3 +1,4 @@
+import { asc, eq } from 'drizzle-orm'
 import { z } from 'zod'
 import { CURRENCIES } from '#shared/utils/constants'
 
@@ -42,10 +43,12 @@ export default defineEventHandler(async (event) => {
   const user = await requireTokenUser(event)
   rateLimit(`shortcut-add:${user.id}`, 120, 60 * 60_000)
   const { url, html } = await readValid(event, bodySchema)
-  const boardId = Number(getQuery(event).board) || 0
-
   const db = await useDb()
-  const boardIds = await ownBoardIds(db, user.id, boardId ? [boardId] : [])
+  const choice = String(getQuery(event).board ?? '').trim()
+  const boardIds = await resolveBoard(user.id, choice)
+  // Liste demandée mais pas reconnue : on le dit dans la notification
+  const missed = choice && choice !== '0' && !/^sans liste$/i.test(choice) && !boardIds.length
+  const note = missed ? ` (liste « ${choice.replace(/\s+/g, ' ').slice(0, 30)} » introuvable)` : ''
 
   const { product, warning } = await fetchProduct(url, html || undefined)
 
@@ -55,7 +58,7 @@ export default defineEventHandler(async (event) => {
     const current = await findProduct(db, user.id, existing.id)
     const ids = [...new Set([...current.productBoards.map(pb => pb.boardId), ...boardIds])]
     await setProductBoards(db, existing.id, ids)
-    return { id: existing.id, created: false, message: `Déjà enregistré : ${existing.name}` }
+    return { id: existing.id, created: false, message: `Déjà enregistré : ${existing.name}${note}` }
   }
 
   const photo = await productPhoto(product.imageUrl, product.url)
@@ -78,9 +81,32 @@ export default defineEventHandler(async (event) => {
   return {
     id,
     created: true,
-    message: `Ajouté : ${name}${price ? ` · ${price}` : ''}${warning && product.price == null ? ' (prix à compléter)' : ''}`,
+    message: `Ajouté : ${name}${price ? ` · ${price}` : ''}${warning && product.price == null ? ' (prix à compléter)' : ''}${note}`,
   }
 })
+
+/**
+ * Liste choisie dans le Raccourci : son numéro (« 3 ») ou directement son nom
+ * (« Salon », tel que proposé par « Choisir dans la liste »), sans tenir compte
+ * des majuscules ni des accents. « Salon (2) » désigne le 2e homonyme.
+ * Vide, 0 ou « Sans liste » : aucune liste.
+ */
+async function resolveBoard(userId: string, value: string) {
+  const choice = value.trim()
+  if (!choice || choice === '0') return []
+  const db = await useDb()
+  if (/^\d+$/.test(choice)) return ownBoardIds(db, userId, [Number(choice)])
+
+  const boards = await db.select({ id: schema.boards.id, name: schema.boards.name }).from(schema.boards)
+    .where(eq(schema.boards.userId, userId))
+    .orderBy(asc(schema.boards.position), asc(schema.boards.id))
+  const norm = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim()
+  const [, base = choice, nth] = choice.match(/^([\s\S]*?)(?:\s*\((\d+)\))?$/) ?? []
+  const matches = boards.filter(b => norm(b.name) === norm(base))
+  const exact = boards.find(b => norm(b.name) === norm(choice))
+  const board = exact ?? matches[(Number(nth) || 1) - 1]
+  return board ? [board.id] : []
+}
 
 function formatCents(cents: number | null, currency: string) {
   if (cents == null) return null

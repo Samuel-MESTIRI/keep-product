@@ -158,19 +158,10 @@ completion(JSON.stringify({ url: location.href, html: d.outerHTML }));`
 
         <li class="card p-4">
           <p class="mb-2 font-semibold">
-            ⑤ Obtenir la valeur du dictionnaire
-          </p>
-          <p class="text-[14px] text-ink-2">
-            Obtenir la <strong>Valeur</strong> pour <strong>Élément choisi</strong> dans <strong>Contenu de l'URL</strong> (celui de l'étape ③) : le nom choisi devient le numéro de la liste.
-          </p>
-        </li>
-
-        <li class="card p-4">
-          <p class="mb-2 font-semibold">
-            ⑥ Obtenir le contenu de l'URL <span class="font-normal text-ink-2">(ajout du produit)</span>
+            ⑤ Obtenir le contenu de l'URL <span class="font-normal text-ink-2">(ajout du produit)</span>
           </p>
           <p class="mb-2 text-[14px] text-ink-2">
-            URL : colle ceci, puis ajoute juste après la variable <strong>Valeur du dictionnaire</strong> :
+            URL : colle ceci, puis ajoute juste après (sans espace) la variable <strong>Élément choisi</strong> :
           </p>
           <CopyField :value="`${origin}/api/shortcut/add?board=`" label="URL" />
           <p class="mt-3 text-[14px] text-ink-2">
@@ -185,19 +176,20 @@ completion(JSON.stringify({ url: location.href, html: d.outerHTML }));`
 
         <li class="card p-4">
           <p class="mb-2 font-semibold">
-            ⑦ Obtenir la valeur du dictionnaire
+            ⑥ Obtenir la valeur du dictionnaire
           </p>
           <p class="text-[14px] text-ink-2">
-            Obtenir la <strong>Valeur</strong> pour la clé <strong>message</strong> dans <strong>Contenu de l'URL</strong> (celui de l'étape ⑥).
+            Obtenir la <strong>Valeur</strong> pour la clé <strong>message</strong> dans <strong>Contenu de l'URL</strong> (celui de l'étape ⑤).
           </p>
         </li>
 
         <li class="card p-4">
           <p class="mb-2 font-semibold">
-            ⑧ Afficher la notification
+            ⑦ Afficher la notification
           </p>
           <p class="text-[14px] text-ink-2">
-            Texte : variable <strong>Valeur du dictionnaire</strong>. Tu verras « Ajouté : … · 899 € ».
+            Texte : variable <strong>Valeur du dictionnaire</strong> (la dernière). Tu verras « Ajouté : … · 899 € »,
+            ou ce qui ne va pas (par exemple « liste introuvable »).
           </p>
         </li>
       </ol>
