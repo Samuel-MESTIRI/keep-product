@@ -86,7 +86,7 @@ async function remove() {
   await $fetch(`/api/products/${id}`, { method: 'DELETE' })
   await refreshCollections()
   toast.show('Produit supprimé')
-  goBack('/')
+  goBack('/products')
 }
 
 const menu = ref(false)
@@ -97,7 +97,7 @@ const menu = ref(false)
     <!-- Photo -->
     <div class="relative bg-photo">
       <div class="safe-top safe-x absolute inset-x-0 top-0 z-10 flex justify-between">
-        <IconButton icon="back" label="Retour" variant="scrim" @click="goBack('/')" />
+        <IconButton icon="back" label="Retour" variant="scrim" @click="goBack('/products')" />
         <IconButton icon="dots" label="Plus d'actions" variant="scrim" @click="menu = true" />
       </div>
       <img
@@ -221,7 +221,7 @@ const menu = ref(false)
             @click="toggleBoard(b.id)"
           />
           <p v-if="!boards.length" class="text-ink-2">
-            Aucune liste. <NuxtLink to="/boards" class="font-semibold text-primary">Créer une liste</NuxtLink>
+            Aucune liste. <NuxtLink to="/" class="font-semibold text-primary">Créer une liste</NuxtLink>
           </p>
         </div>
       </section>

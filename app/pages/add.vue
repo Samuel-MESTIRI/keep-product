@@ -21,8 +21,19 @@ const canPaste = ref(false)
 /** Lien trouvé dans un texte (« Regarde ce canapé https://… »). */
 const findUrl = (text: string) => text.match(/https?:\/\/[^\s<>"]+/)?.[0] ?? null
 
-// Le formulaire s'affiche en plein écran, sans la barre d'onglets
-watch(form, value => setPageLayout(value ? 'bare' : 'default'))
+// Le formulaire s'affiche sans la barre d'onglets (son bouton Enregistrer est en bas d'écran)
+const hideNav = useState('hide-nav', () => false)
+watch(form, value => (hideNav.value = !!value))
+onBeforeUnmount(() => (hideNav.value = false))
+
+// Lien collé dans le champ : lecture immédiate, sans second geste
+function onPaste(e: ClipboardEvent) {
+  const found = findUrl(e.clipboardData?.getData('text') ?? '')
+  if (!found) return
+  e.preventDefault()
+  url.value = found
+  read()
+}
 
 async function read() {
   const value = findUrl(url.value.trim()) ?? url.value.trim()
@@ -103,7 +114,6 @@ onMounted(() => {
   }
 })
 
-onBeforeRouteLeave(() => setPageLayout('default'))
 </script>
 
 <template>
@@ -135,6 +145,7 @@ onBeforeRouteLeave(() => setPageLayout('default'))
             autocapitalize="none"
             enterkeyhint="go"
             :disabled="reading"
+            @paste="onPaste"
           >
         </div>
 
@@ -166,7 +177,7 @@ onBeforeRouteLeave(() => setPageLayout('default'))
     </template>
 
     <!-- Étape 2 : vérification de la fiche -->
-    <div v-else class="safe-top safe-x mx-auto max-w-2xl">
+    <div v-else>
       <header class="mb-4 flex min-h-12 items-center gap-2">
         <IconButton icon="back" label="Retour" class="-ml-3 text-primary!" @click="restart" />
         <h1 class="min-w-0 flex-1 truncate text-[22px] leading-tight font-bold">

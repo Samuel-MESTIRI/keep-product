@@ -7,13 +7,14 @@
 const route = useRoute()
 
 const tabs = [
-  { to: '/', label: 'Produits', icon: 'grid' },
-  { to: '/boards', label: 'Listes', icon: 'boards' },
+  { to: '/', label: 'Listes', icon: 'boards' },
+  { to: '/products', label: 'Produits', icon: 'grid' },
   { to: '/add', label: 'Ajouter', icon: 'plus' },
   { to: '/settings', label: 'Réglages', icon: 'setting' },
 ]
 
-const isActive = (to: string) => (to === '/' ? route.path === '/' || route.path.startsWith('/products') : route.path.startsWith(to))
+// Accueil = les listes (et le détail d'une liste)
+const isActive = (to: string) => (to === '/' ? route.path === '/' || route.path.startsWith('/boards') : route.path.startsWith(to))
 const activeIndex = computed(() => tabs.findIndex(t => isActive(t.to)))
 
 // Position de la pastille, mesurée sur l'onglet actif

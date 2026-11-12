@@ -25,7 +25,7 @@ function edit() {
 <template>
   <div v-if="board">
     <header class="mb-4 flex min-h-12 items-center gap-2 pt-1">
-      <IconButton icon="back" label="Retour aux listes" class="-ml-3 text-primary!" @click="goBack('/boards')" />
+      <IconButton icon="back" label="Retour aux listes" class="-ml-3 text-primary!" @click="goBack('/')" />
       <AppIcon :name="boardIcon(board.icon)" :size="26" class="text-accent" />
       <h1 class="min-w-0 flex-1 truncate text-[26px] leading-tight font-bold tracking-tight">
         {{ board.name }}
@@ -84,6 +84,6 @@ function edit() {
       text="Ajoute un produit depuis un lien, ou range ici un produit existant depuis sa fiche."
     />
 
-    <BoardEditor v-model="editor" @deleted="navigateTo('/boards', { replace: true })" />
+    <BoardEditor v-model="editor" @deleted="navigateTo('/', { replace: true })" />
   </div>
 </template>

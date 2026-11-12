@@ -82,6 +82,8 @@ export default defineNuxtConfig({
   nitro: {
     compressPublicAssets: { gzip: true, brotli: true },
     routeRules: {
+      // Les listes sont devenues l'accueil
+      '/boards': { redirect: '/' },
       '/_nuxt/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
     },
   },

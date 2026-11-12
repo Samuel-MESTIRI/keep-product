@@ -16,7 +16,7 @@ useHead({ title: notFound.value ? 'Introuvable · KeepProduct' : 'Oups · KeepPr
       {{ notFound ? (error.statusMessage || 'Cette page n\'existe pas ou plus.') : 'Réessaie dans un instant.' }}
     </p>
     <AppButton class="max-w-xs" @click="clearError({ redirect: '/' })">
-      Retour à mes produits
+      Retour à l'accueil
     </AppButton>
   </div>
 </template>

@@ -9,7 +9,7 @@ Wishlist intelligente pour l'aménagement et la déco : on colle le lien d'un me
 - **Ajout depuis un lien** : la page du produit est lue côté serveur et pré-remplit le formulaire, à vérifier avant d'enregistrer. Produit déjà enregistré signalé. Saisie manuelle toujours possible.
 - **Fiche produit** : photo, nom, boutique, marque, prix, prix barré et remise, dimensions, disponibilité, couleur, quantité, notes, lien « Voir sur le site ».
 - **Actualiser prix et stock** depuis la fiche : historique des prix relevés (« 129 € à l'ajout · plus bas : 99 € »).
-- **Listes** (pièces ou projets) avec icônes, couverture en mosaïque, budget total et « reste à acheter ». Un produit peut être dans plusieurs listes.
+- **Listes** (page d'accueil, par pièce ou projet) avec icônes, couverture en mosaïque, budget total et « reste à acheter ». Un produit peut être dans plusieurs listes.
 - **Grille façon Pinterest** (chaque photo garde ses proportions), recherche sans accents (nom, boutique, marque, couleur, notes), filtres par liste et « Promos ».
 - **Acheté** : un produit coché sort du « reste à acheter » ; on peut masquer les achetés dans une liste.
 - **Partage Android** : une fois l'app installée, « Partager » depuis le navigateur ouvre directement l'ajout (`share_target` du manifeste). iOS ne le permet pas encore : bouton « Coller le lien ».
